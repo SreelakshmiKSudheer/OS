@@ -10,3 +10,5 @@ readonly current_year   # makes the var a read only done, can't be ovewritten
 yob=$((current_year-age))
 echo "Hi, $name"
 echo "You are born in $yob"
+unset name
+echo $name
