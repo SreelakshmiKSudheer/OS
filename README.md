@@ -17,3 +17,5 @@ This course focuses on providing practical experience in understanding and imple
 
 
 ## Content
+  ### Week 0
+  Practice Tutorials
