@@ -1,5 +1,21 @@
 {
   "C_Cpp_Runner.msvcBatchPath": "",
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "MySQLConnection",
+      "database": "SKS'DB",
+      "username": "SreelakshmiKStark",
+      "password": "SreeStark@Av5"
+    }
+  ],
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
   "C_Cpp_Runner.debuggerPath": "gdb",
