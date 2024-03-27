@@ -10,6 +10,8 @@ typedef struct Process
     int resp_time;
     int comp_time;
     int wait_time;
+    int priority;
+    int remain;
 
 }Process;
 
@@ -30,6 +32,17 @@ void sort(Process *a, int n)
 
             }
         }
+    }
+}
+
+void print(Process *a, int n)
+{
+    int i;
+
+    for(i = 0; i < n; i++)
+    {
+        printf("%2d%15d%12d%15d%17d%18d%14d\n",a[i].PID,a[i].arr_time,a[i].burst_time,a[i].resp_time,a[i].comp_time,a[i].ta_time,a[i].wait_time);
+
     }
 }
 
@@ -57,8 +70,6 @@ void fcfs(Process *a, int n)
         a[i].ta_time = a[i].comp_time - a[i].arr_time;
         a[i].wait_time = a[i].ta_time - a[i].burst_time;
 
-        printf("%2d%15d%12d%15d%17d%18d%14d\n",a[i].PID,a[i].arr_time,a[i].burst_time,a[i].resp_time,a[i].comp_time,a[i].ta_time,a[i].wait_time);
-
         sys_time = a[i].comp_time;
 
         resp_sum += a[i].resp_time;
@@ -67,11 +78,13 @@ void fcfs(Process *a, int n)
 
     }
 
+    print(a,n);
     printf("\nAvg response time: %.2f",(float)resp_sum/n);
     printf("\nAvg turn around time: %.2f",(float)ta_sum/n);
     printf("\nAvg waiting time: %.2f",(float)wait_sum/n);
     
 }
+
 int main()
 {
     int n,i;
@@ -92,6 +105,8 @@ int main()
         scanf("%d",&a[i].arr_time);
         printf("Burst Time: ");
         scanf("%d",&a[i].burst_time);
+        printf("Priority Scheduling: ");
+        scanf("%d",&a[i].priority);
     }
 
     fcfs(a,n);

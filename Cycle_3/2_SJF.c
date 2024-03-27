@@ -10,6 +10,8 @@ typedef struct Process
     int resp_time;
     int comp_time;
     int wait_time;
+    int priority;
+    int remain;
 
 }Process;
 
@@ -43,6 +45,7 @@ void print(Process *a, int n)
 
     }
 }
+
 int allCompleted(int n,int rec[])
 {
     int i;
@@ -117,7 +120,7 @@ void sjf(Process *a, int n)
     }
 
     print(a,n);
-    
+
     printf("\nAvg response time: %.2f",(float)resp_sum/n);
     printf("\nAvg turn around time: %.2f",(float)ta_sum/n);
     printf("\nAvg waiting time: %.2f",(float)wait_sum/n);
@@ -144,6 +147,8 @@ int main()
         scanf("%d",&a[i].arr_time);
         printf("Burst Time: ");
         scanf("%d",&a[i].burst_time);
+        printf("Priority Scheduling: ");
+        scanf("%d",&a[i].priority);
     }
 
     sjf(a,n);
