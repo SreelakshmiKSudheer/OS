@@ -5,6 +5,7 @@ typedef struct Process
     int PID;
     int arr_time;
     int burst_time;
+    int start;
     int ta_time;
     int resp_time;
     int comp_time;
@@ -40,23 +41,25 @@ void fcfs(Process *a, int n)
     printf("First Come First Serve\n");
     printf("PID  Arrival Time  Burst Time  Response Time  Completion Time  Turn Around Time  Waiting Time\n");
 
-    int start = 0, resp_sum = 0, ta_sum = 0,wait_sum = 0;
+    int sys_time = 0, resp_sum = 0, ta_sum = 0,wait_sum = 0;
 
     for(i = 0; i < n; i++)
     {
-        if(start < a[i].arr_time)
+
+        if(sys_time < a[i].arr_time)
         {
-            start = a[i].arr_time;
+            sys_time = a[i].arr_time;
         }
 
-        a[i].resp_time = start - a[i].arr_time;
-        a[i].comp_time = start + a[i].burst_time;
+        a[i].start = sys_time;
+        a[i].resp_time = a[i].start - a[i].arr_time;
+        a[i].comp_time = a[i].start + a[i].burst_time;
         a[i].ta_time = a[i].comp_time - a[i].arr_time;
-        a[i].wait_time = a[i].burst_time;
+        a[i].wait_time = a[i].ta_time - a[i].burst_time;
 
-        printf("%2d%15d%12d%15d%17d%18d%14d",a[i].PID,a[i].arr_time,a[i].burst_time,a[i].resp_time,a[i].comp_time,a[i].ta_time,a[i].wait_time);
+        printf("%2d%15d%12d%15d%17d%18d%14d\n",a[i].PID,a[i].arr_time,a[i].burst_time,a[i].resp_time,a[i].comp_time,a[i].ta_time,a[i].wait_time);
 
-        start = a[i].comp_time;
+        sys_time = a[i].comp_time;
 
         resp_sum += a[i].resp_time;
         ta_sum += a[i].ta_time;
