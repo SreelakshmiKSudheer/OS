@@ -15,6 +15,7 @@ typedef struct Process
 
 }Process;
 
+// sort according to arrival time
 void sort(Process *a, int n)
 {
     int i,j;
@@ -35,6 +36,7 @@ void sort(Process *a, int n)
     }
 }
 
+// print details in acsending order of arrival time
 void print(Process *a, int n)
 {
     int i;
@@ -46,6 +48,7 @@ void print(Process *a, int n)
     }
 }
 
+// function fcfs
 void fcfs(Process *a, int n)
 {
     sort(a,n);
@@ -64,6 +67,7 @@ void fcfs(Process *a, int n)
             sys_time = a[i].arr_time;
         }
 
+        // sets
         a[i].start = sys_time;
         a[i].resp_time = a[i].start - a[i].arr_time;
         a[i].comp_time = a[i].start + a[i].burst_time;
