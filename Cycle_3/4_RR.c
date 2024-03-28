@@ -15,6 +15,7 @@ typedef struct Process
 
 }Process;
 
+// sort according to arrival time
 void sort(Process *a, int n)
 {
     int i,j;
@@ -35,6 +36,7 @@ void sort(Process *a, int n)
     }
 }
 
+// print details in acsending order of arrival time
 void print(Process *a, int n)
 {
     int i;
@@ -46,6 +48,7 @@ void print(Process *a, int n)
     }
 }
 
+// check whether all processes are completed or not at once
 int allCompleted(int n,int rec[])
 {
     int i;
@@ -59,6 +62,7 @@ int allCompleted(int n,int rec[])
     return 1;
 }
 
+// check single process completion
 int isComplete(Process p)
 {
     if(p.remain == 0)
@@ -66,6 +70,7 @@ int isComplete(Process p)
     return 0;
 }
 
+// define rr
 void rr(Process *a, int n)
 {
     sort(a,n);
