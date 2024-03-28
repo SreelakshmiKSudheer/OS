@@ -15,6 +15,7 @@ typedef struct Process
 
 }Process;
 
+// sort according to arrival time
 void sort(Process *a, int n)
 {
     int i,j;
@@ -35,6 +36,7 @@ void sort(Process *a, int n)
     }
 }
 
+// print details in acsending order of arrival time
 void print(Process *a, int n)
 {
     int i;
@@ -46,6 +48,7 @@ void print(Process *a, int n)
     }
 }
 
+// check single process completion
 int isComplete(Process p)
 {
     if(p.remain == 0)
@@ -53,6 +56,7 @@ int isComplete(Process p)
     return 0;
 }
 
+// check completion of all process at once
 int allCompleted(int n,int rec[])
 {
     int i;
@@ -66,6 +70,7 @@ int allCompleted(int n,int rec[])
     return 1;
 }
 
+// define fcfs
 void fcfs(Process *a, int n)
 {
     sort(a,n);
@@ -84,6 +89,7 @@ void fcfs(Process *a, int n)
             sys_time = a[i].arr_time;
         }
 
+        // sets
         a[i].start = sys_time;
         a[i].resp_time = a[i].start - a[i].arr_time;
         a[i].comp_time = a[i].start + a[i].burst_time;
@@ -105,6 +111,7 @@ void fcfs(Process *a, int n)
     
 }
 
+// define sjf
 void sjf(Process *a, int n)
 {
     sort(a,n);
@@ -124,10 +131,12 @@ void sjf(Process *a, int n)
     for(i = 0; i < n; i++)
     {
 
+            // check whether all the processes are completed or not
             if(allCompleted(n,rec))
                 break;
             else
             {
+                // checks for shortest incomplete process
                 for(j = 0; j < n; j++)
                 {
                     if(rec[j] == 0)
@@ -149,6 +158,7 @@ void sjf(Process *a, int n)
                     sys_time = a[min].arr_time;
                 }
 
+                // sets
                 a[min].start = sys_time;
                 a[min].resp_time = a[min].start - a[min].arr_time;
                 a[min].comp_time = a[min].start + a[min].burst_time;
@@ -173,6 +183,7 @@ void sjf(Process *a, int n)
     
 }
 
+// define ps
 void ps(Process *a, int n)
 {
     sort(a,n);
@@ -196,6 +207,7 @@ void ps(Process *a, int n)
                 break;
             else
             {
+                // checks for process with most priority
                 prior = -1;
                 for (j = 0; j < n; j++) 
                 {
@@ -217,6 +229,7 @@ void ps(Process *a, int n)
                     sys_time = a[prior].arr_time;
                 }
 
+                // sets
                 a[prior].start = sys_time;
                 a[prior].resp_time = a[prior].start - a[prior].arr_time;
                 a[prior].comp_time = a[prior].start + a[prior].burst_time;
@@ -233,6 +246,101 @@ void ps(Process *a, int n)
         }
     }
 
+    print(a,n);
+
+    printf("\nAvg response time: %.2f",(float)resp_sum/n);
+    printf("\nAvg turn around time: %.2f",(float)ta_sum/n);
+    printf("\nAvg waiting time: %.2f",(float)wait_sum/n);
+    
+}
+
+// define rr
+void rr(Process *a, int n)
+{
+    sort(a,n);
+
+    int i,j,prior;
+    const int N = n;
+    int rec[N];
+
+    // settles things for completion check
+    for(i = 0; i < n; i++)
+    {
+        rec[i] = 0;
+        a[i].remain = a[i].burst_time;
+    }
+
+    printf("Priority scheduling\n");
+    printf("PID  Arrival Time  Burst Time  Response Time  Completion Time  Turn Around Time  Waiting Time\n");
+
+    int sys_time = 0, resp_sum = 0, ta_sum = 0,wait_sum = 0;
+
+    for(i = 0; i < n; i++)
+    {
+
+            if(allCompleted(n,rec))
+                break;
+            else
+            {
+                
+                while(!allCompleted(n,rec))
+                {
+                    // finding process with highest priority
+                    prior = -1;
+
+                    for (j = 0; j < n; j++) 
+                    {
+                        if (rec[j] == 0 && a[j].arr_time <= sys_time) 
+                        {
+                            if (prior == -1 || a[j].priority < a[prior].priority)
+                                prior = j;
+                        }
+                    }
+                
+                    if (prior == -1) 
+                    {
+                        sys_time++;
+                        continue;
+                    }
+                    
+                    if(sys_time < a[prior].arr_time)
+                    {
+                        sys_time = a[prior].arr_time;
+                    }
+                    
+                    // setting starting time and response time of the process
+                    if(a[prior].remain == a[prior].burst_time)
+                    {
+                        a[prior].start = sys_time;
+                        a[prior].resp_time = a[prior].start - a[prior].arr_time;
+                    }
+                    
+                    // update system time
+                    sys_time++;
+
+                    // update remaining time of each process
+                    a[prior].remain--;
+                    
+                    // check whether the current process is complete or not
+                    if(isComplete(a[prior]))
+                    {
+                        a[prior].comp_time = sys_time;                                      // set completion time
+                        a[prior].ta_time = a[prior].comp_time - a[prior].arr_time;          // set turn around time
+                        a[prior].wait_time = a[prior].ta_time - a[prior].burst_time;        // set waiting time
+
+                        rec[prior] = 1;                                                     // process completion recorded
+
+                        resp_sum += a[prior].resp_time;                                     // summing response times for avg
+                        ta_sum += a[prior].ta_time;                                         // summing turn around times for avg
+                        wait_sum += a[prior].wait_time;                                     // summing waiting times for avg
+                    }
+
+                }
+
+        }
+    }
+
+    // prints 
     print(a,n);
 
     printf("\nAvg response time: %.2f",(float)resp_sum/n);
@@ -261,13 +369,15 @@ int main()
         scanf("%d",&a[i].arr_time);
         printf("Burst Time: ");
         scanf("%d",&a[i].burst_time);
-        printf("Priority Scheduling: ");
+        printf("Priority: ");
         scanf("%d",&a[i].priority);
     }
 
+// call the different CPU scheduling functions
     fcfs(a,n);
     sjf(a,n);
     ps(a,n);
+    rr(a,n);
 
 
 }
