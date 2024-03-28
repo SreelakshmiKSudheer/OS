@@ -15,6 +15,7 @@ typedef struct Process
 
 }Process;
 
+// sort according to arrival time
 void sort(Process *a, int n)
 {
     int i,j;
@@ -35,6 +36,7 @@ void sort(Process *a, int n)
     }
 }
 
+// print details in acsending order of arrival time
 void print(Process *a, int n)
 {
     int i;
@@ -46,6 +48,7 @@ void print(Process *a, int n)
     }
 }
 
+// check whether all processes are completed or not at once
 int allCompleted(int n,int rec[])
 {
     int i;
@@ -59,6 +62,7 @@ int allCompleted(int n,int rec[])
     return 1;
 }
 
+// define priority scheduling
 void ps(Process *a, int n)
 {
     sort(a,n);
@@ -77,11 +81,12 @@ void ps(Process *a, int n)
 
     for(i = 0; i < n; i++)
     {
-
+            // check whether all processes are completed or not
             if(allCompleted(n,rec))
                 break;
             else
             {
+                // checks for incomplete process with most priority
                 prior = -1;
                 for (j = 0; j < n; j++) 
                 {
@@ -103,6 +108,7 @@ void ps(Process *a, int n)
                     sys_time = a[prior].arr_time;
                 }
 
+                // sets
                 a[prior].start = sys_time;
                 a[prior].resp_time = a[prior].start - a[prior].arr_time;
                 a[prior].comp_time = a[prior].start + a[prior].burst_time;
