@@ -46,6 +46,13 @@ void print(Process *a, int n)
     }
 }
 
+int isComplete(Process p)
+{
+    if(p.remain == 0)
+        return 1;
+    return 0;
+}
+
 int allCompleted(int n,int rec[])
 {
     int i;

@@ -59,6 +59,106 @@ int allCompleted(int n,int rec[])
     return 1;
 }
 
+int isComplete(Process p)
+{
+    if(p.remain == 0)
+        return 1;
+    return 0;
+}
+
+void rr(Process *a, int n)
+{
+    sort(a,n);
+
+    int i,j,prior;
+    const int N = n;
+    int rec[N];
+
+    // settles things for completion check
+    for(i = 0; i < n; i++)
+    {
+        rec[i] = 0;
+        a[i].remain = a[i].burst_time;
+    }
+
+    printf("Priority scheduling\n");
+    printf("PID  Arrival Time  Burst Time  Response Time  Completion Time  Turn Around Time  Waiting Time\n");
+
+    int sys_time = 0, resp_sum = 0, ta_sum = 0,wait_sum = 0;
+
+    for(i = 0; i < n; i++)
+    {
+
+            if(allCompleted(n,rec))
+                break;
+            else
+            {
+                
+                while(!allCompleted(n,rec))
+                {
+                    // finding process with highest priority
+                    prior = -1;
+
+                    for (j = 0; j < n; j++) 
+                    {
+                        if (rec[j] == 0 && a[j].arr_time <= sys_time) 
+                        {
+                            if (prior == -1 || a[j].priority < a[prior].priority)
+                                prior = j;
+                        }
+                    }
+                
+                    if (prior == -1) 
+                    {
+                        sys_time++;
+                        continue;
+                    }
+                    
+                    if(sys_time < a[prior].arr_time)
+                    {
+                        sys_time = a[prior].arr_time;
+                    }
+                    
+                    // setting starting time and response time of the process
+                    if(a[prior].remain == a[prior].burst_time)
+                    {
+                        a[prior].start = sys_time;
+                        a[prior].resp_time = a[prior].start - a[prior].arr_time;
+                    }
+                    
+                    // update system time
+                    sys_time++;
+
+                    // update remaining time of each process
+                    a[prior].remain--;
+                    
+                    // check whether the current process is complete or not
+                    if(isComplete(a[prior]))
+                    {
+                        a[prior].comp_time = sys_time;                                      // set completion time
+                        a[prior].ta_time = a[prior].comp_time - a[prior].arr_time;          // set turn around time
+                        a[prior].wait_time = a[prior].ta_time - a[prior].burst_time;        // set waiting time
+
+                        rec[prior] = 1;                                                     // process completion recorded
+
+                        resp_sum += a[prior].resp_time;                                     // summing response times for avg
+                        ta_sum += a[prior].ta_time;                                         // summing turn around times for avg
+                        wait_sum += a[prior].wait_time;                                     // summing waiting times for avg
+                    }
+
+                }
+
+        }
+    }
+
+    // prints 
+    print(a,n);
+
+    printf("\nAvg response time: %.2f",(float)resp_sum/n);
+    printf("\nAvg turn around time: %.2f",(float)ta_sum/n);
+    printf("\nAvg waiting time: %.2f",(float)wait_sum/n);
+    
+}
 
 int main()
 {
