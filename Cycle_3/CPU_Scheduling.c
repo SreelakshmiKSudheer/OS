@@ -107,7 +107,7 @@ void fcfs(Process *a, int n)
     print(a,n);
     printf("\nAvg response time: %.2f",(float)resp_sum/n);
     printf("\nAvg turn around time: %.2f",(float)ta_sum/n);
-    printf("\nAvg waiting time: %.2f",(float)wait_sum/n);
+    printf("\nAvg waiting time: %.2f\n",(float)wait_sum/n);
     
 }
 
@@ -131,12 +131,10 @@ void sjf(Process *a, int n)
     for(i = 0; i < n; i++)
     {
 
-            // check whether all the processes are completed or not
             if(allCompleted(n,rec))
                 break;
             else
             {
-                // checks for shortest incomplete process
                 for(j = 0; j < n; j++)
                 {
                     if(rec[j] == 0)
@@ -147,10 +145,14 @@ void sjf(Process *a, int n)
                 }
             
 
-                for(j = 0; a[j].arr_time <= sys_time; j++)
+                for(j = 0; j < n; j++)
                 {
-                    if(a[j].burst_time < a[min].burst_time && rec[j] == 0)
-                        min = j;
+                    if(a[j].arr_time <= sys_time)
+                    {
+                        if(a[j].burst_time < a[min].burst_time && rec[j] == 0)
+                            min = j;
+                    }
+                    //printf("min = %d\n",min);
                 }
                 
                 if(sys_time < a[min].arr_time)
@@ -158,7 +160,6 @@ void sjf(Process *a, int n)
                     sys_time = a[min].arr_time;
                 }
 
-                // sets
                 a[min].start = sys_time;
                 a[min].resp_time = a[min].start - a[min].arr_time;
                 a[min].comp_time = a[min].start + a[min].burst_time;
@@ -176,10 +177,10 @@ void sjf(Process *a, int n)
     }
 
     print(a,n);
-
+    
     printf("\nAvg response time: %.2f",(float)resp_sum/n);
     printf("\nAvg turn around time: %.2f",(float)ta_sum/n);
-    printf("\nAvg waiting time: %.2f",(float)wait_sum/n);
+    printf("\nAvg waiting time: %.2f\n",(float)wait_sum/n);
     
 }
 
@@ -250,7 +251,7 @@ void ps(Process *a, int n)
 
     printf("\nAvg response time: %.2f",(float)resp_sum/n);
     printf("\nAvg turn around time: %.2f",(float)ta_sum/n);
-    printf("\nAvg waiting time: %.2f",(float)wait_sum/n);
+    printf("\nAvg waiting time: %.2f\n",(float)wait_sum/n);
     
 }
 
@@ -270,7 +271,7 @@ void rr(Process *a, int n)
         a[i].remain = a[i].burst_time;
     }
 
-    printf("Priority scheduling\n");
+    printf("Round Robin\n");
     printf("PID  Arrival Time  Burst Time  Response Time  Completion Time  Turn Around Time  Waiting Time\n");
 
     int sys_time = 0, resp_sum = 0, ta_sum = 0,wait_sum = 0;
@@ -345,7 +346,7 @@ void rr(Process *a, int n)
 
     printf("\nAvg response time: %.2f",(float)resp_sum/n);
     printf("\nAvg turn around time: %.2f",(float)ta_sum/n);
-    printf("\nAvg waiting time: %.2f",(float)wait_sum/n);
+    printf("\nAvg waiting time: %.2f\n",(float)wait_sum/n);
     
 }
 

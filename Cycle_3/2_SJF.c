@@ -45,7 +45,6 @@ void print(Process *a, int n)
 
     }
 }
-
 int allCompleted(int n,int rec[])
 {
     int i;
@@ -92,10 +91,14 @@ void sjf(Process *a, int n)
                 }
             
 
-                for(j = 0; a[j].arr_time <= sys_time; j++)
+                for(j = 0; j < n; j++)
                 {
-                    if(a[j].burst_time < a[min].burst_time && rec[j] == 0)
-                        min = j;
+                    if(a[j].arr_time <= sys_time)
+                    {
+                        if(a[j].burst_time < a[min].burst_time && rec[j] == 0)
+                            min = j;
+                    }
+                    //printf("min = %d\n",min);
                 }
                 
                 if(sys_time < a[min].arr_time)
@@ -120,7 +123,7 @@ void sjf(Process *a, int n)
     }
 
     print(a,n);
-
+    
     printf("\nAvg response time: %.2f",(float)resp_sum/n);
     printf("\nAvg turn around time: %.2f",(float)ta_sum/n);
     printf("\nAvg waiting time: %.2f",(float)wait_sum/n);
@@ -147,7 +150,7 @@ int main()
         scanf("%d",&a[i].arr_time);
         printf("Burst Time: ");
         scanf("%d",&a[i].burst_time);
-        printf("Priority Scheduling: ");
+        printf("Priority: ");
         scanf("%d",&a[i].priority);
     }
 
