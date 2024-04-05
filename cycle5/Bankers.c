@@ -13,7 +13,7 @@ int main()
     const int n = N;
 
     int work[m],finish[n],available[m],allocation[n][m],max[n][m],need[n][m];
-
+    int safeseq[n];
     int i,j;
 
     // max read
@@ -56,6 +56,20 @@ int main()
         finish[i] = 0;
     }
 
-    
+    int count = 0;
+
+    while(count < n)
+    {
+        int suit = 0;
+
+        for(i = 0; i < n; i++)
+        
+        {
+            for(j = 0; j < m; j++)
+            {
+                
+            }
+        }
+    }
     
 }   
