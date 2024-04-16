@@ -91,11 +91,10 @@ void rr(Process *a, int n)
 
     int sys_time = 0, resp_sum = 0, ta_sum = 0,wait_sum = 0;
 
-    for(i = 0; i < n; i++)
+
     {
 
-            if(allCompleted(n,rec))
-                break;
+            if(allCompleted(n,rec));
             else
             {
                 
@@ -136,7 +135,7 @@ void rr(Process *a, int n)
 
                     // update remaining time of each process
                     a[prior].remain--;
-                    
+ 
                     // check whether the current process is complete or not
                     if(isComplete(a[prior]))
                     {

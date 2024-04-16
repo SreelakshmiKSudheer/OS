@@ -18,7 +18,7 @@ typedef struct Process
 // sort according to arrival time
 void sort(Process *a, int n)
 {
-    int i,j;
+    int i,j;                    // loop variables
     Process temp;
 
     for(i = 0; i < n; i++)
