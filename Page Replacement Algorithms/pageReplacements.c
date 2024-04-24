@@ -86,6 +86,62 @@ void fifo(int ref[],int n)
     printf("Page faults: %d\n",fault);
 }
 
+int search(int pf[], int front, int rear,int current, int ref[],int n)
+{
+    int i,j;
+
+    for(i = front; i != rear; i = (i + 1) % SIZE)
+    {
+        for(j = current + 1; j < n; j++)
+        {
+            if(pf[i] == ref[j])
+                return j;
+
+        }
+    }
+    
+}
+
+void optimal(int ref[],int n)
+{
+    int front = -1, rear = -1;
+    int pf[SIZE],found,i,j,k,fault = 0;
+
+    printf("Optimal Replacement\n");
+    for(i = 0; i < n; i++)
+    {
+        found = 0;
+
+        for(j = 0; j < SIZE; j++)
+        {
+            if(ref[i] == pf[j])             // page found
+            {
+                found = 1;
+                break;
+            }
+        }
+
+        if(found == 0)                      // page not found
+        {
+            fault++;
+            if(!isfull(front,rear))
+            {
+                enqueue(pf,&front,&rear,ref[i]);
+            }
+            else
+            {
+                
+                dequeue(pf,&front,&rear);
+                enqueue(pf,&front,&rear,ref[i]);
+            }
+        }
+
+        printf("%d :\t",ref[i]);
+        display(pf,front,rear);
+
+    }
+    printf("Page faults: %d\n",fault);
+}
 
 int main()
 {

@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/user/OneDrive/Documents/Academics/S4/OSlab/Cycle_3",
-      "program": "c:/Users/user/OneDrive/Documents/Academics/S4/OSlab/Cycle_3/build/Debug/outDebug",
+      "cwd": "c:/Users/user/OneDrive/Documents/Academics/S4/OSlab",
+      "program": "c:/Users/user/OneDrive/Documents/Academics/S4/OSlab/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
