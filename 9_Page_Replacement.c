@@ -100,6 +100,7 @@ void lru(int ref[],int n)
         printf("\n\nLRU\n");
         for(i = 0; i < n; i++)
         {
+                int index = 0;
                 current = ref[i];
                 found = 0;
 
@@ -111,6 +112,8 @@ void lru(int ref[],int n)
                                 lastUse[j] = i;
                                 break;
                        }
+                       if(lastUse[j] < lastUse[index])
+                                                index = j;
                 }
 
                 if(!found)
@@ -118,14 +121,6 @@ void lru(int ref[],int n)
                         faults++;
                         if(full())                      // frames is full
                         {
-
-                               int index = 0;
-                                int k;
-                                for(k = 1; k < MAX; k++)
-                                {
-                                        if(lastUse[k] < lastUse[index])
-                                                index = k;
-                                }
                                 frame[index] = current;
                                 lastUse[index] = i;
                         }
@@ -145,19 +140,24 @@ void lru(int ref[],int n)
         printf("No. of page faults : %d\n\n",faults);
 }
 
-void lru(int ref[],int n)
+void lfu(int ref[],int n)
 {
         int front = -1,rear = -1,i,j, faults = 0,current,found;
-        int lastUse[MAX];
+        int frequency[MAX], lastUse[MAX];
 
         for(i = 0; i < MAX; i++)
+        {
+                frequency[i] = 0;
                 lastUse[i] = -1;
+        }
+                
 
         initialize();
 
-        printf("\n\nLRU\n");
+        printf("\n\nLFU\n");
         for(i = 0; i < n; i++)
         {
+                int index = 0;
                 current = ref[i];
                 found = 0;
 
@@ -166,9 +166,12 @@ void lru(int ref[],int n)
                         if(frame[j] == current)
                         {
                                 found = 1;
+                                frequency[j]++;
                                 lastUse[j] = i;
                                 break;
                        }
+                       if(frequency[j] < frequency[index])
+                                index = j;
                 }
 
 
@@ -177,21 +180,15 @@ void lru(int ref[],int n)
                         faults++;
                         if(full())                      // frames is full
                         {
-
-                                int index = 0;
-                                int k;
-                                for(k = 1; k < MAX; k++)
-                                {
-                                        if(lastUse[k] < lastUse[index])
-                                                index = k;
-                                }
                                 frame[index] = current;
+                                frequency[index] = 1;
                                 lastUse[index] = i;
                         }
                         else 
                        {
                                 rear = (rear+1) % MAX;                  // enqueue
                                 frame[rear] = current;
+                                frequency[index] = 1;
                                 lastUse[rear] = i;
 
                         }
@@ -223,6 +220,6 @@ int main()
 
         fifo(ref,n);
         lru(ref,n);
-        //lfu(ref,n);
+        lfu(ref,n);
 }
 
