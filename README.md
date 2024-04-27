@@ -56,3 +56,30 @@ CPU Scheduling
   2. Shortest Job First
   3. Priority Scheduling
   4. Round Robin
+
+### Cycle_4
+- Questions:
+  1. Inter Process Communication(Client - Server)
+  2. Process Synchronization implementation using semaphores
+
+### Cycle_5:
+- Questions
+  1. Banker's algorithms
+
+8. Memory Management(First fit, Best fit, Worst Fit)
+
+### Page replacement
+  1. FIFO
+  2. LFU
+  3. LRU
+  4. MFU
+  5. Optimal page replacement
+  6. Page replacement
+
+### Disk Scheduling
+  1. FCFS
+  2. SSTF
+  3. SCAN
+  4. C - SCAN
+  5. LOOK
+  6. C - LOOK
