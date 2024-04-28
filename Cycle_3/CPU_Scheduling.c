@@ -300,7 +300,7 @@ void rr(Process *a, int n)
                 
                     if (prior == -1) 
                     {
-                        sys_time++;
+                        sys_time += quantum;
                         continue;
                     }
                     

@@ -86,15 +86,16 @@ void rr(Process *a, int n)
         a[i].remain = a[i].burst_time;
     }
 
-    printf("Priority scheduling\n");
+    printf("Round Robin\n");
     printf("PID  Arrival Time  Burst Time  Response Time  Completion Time  Turn Around Time  Waiting Time\n");
 
-    int sys_time = 0, resp_sum = 0, ta_sum = 0,wait_sum = 0;
+    int sys_time = 0, resp_sum = 0, ta_sum = 0,wait_sum = 0, quantum = 1;
 
-
+    for(i = 0; i < n; i++)
     {
 
-            if(allCompleted(n,rec));
+            if(allCompleted(n,rec))
+                break;
             else
             {
                 
@@ -114,7 +115,7 @@ void rr(Process *a, int n)
                 
                     if (prior == -1) 
                     {
-                        sys_time++;
+                        sys_time += quantum;
                         continue;
                     }
                     
@@ -131,15 +132,15 @@ void rr(Process *a, int n)
                     }
                     
                     // update system time
-                    sys_time++;
+                    sys_time += quantum;
 
                     // update remaining time of each process
-                    a[prior].remain--;
- 
+                    a[prior].remain -= quantum;
+                    
                     // check whether the current process is complete or not
                     if(isComplete(a[prior]))
                     {
-                        a[prior].comp_time = sys_time;                                      // set completion time
+                        a[prior].comp_time = sys_time + a[prior].remain;                                      // set completion time
                         a[prior].ta_time = a[prior].comp_time - a[prior].arr_time;          // set turn around time
                         a[prior].wait_time = a[prior].ta_time - a[prior].burst_time;        // set waiting time
 
@@ -160,7 +161,7 @@ void rr(Process *a, int n)
 
     printf("\nAvg response time: %.2f",(float)resp_sum/n);
     printf("\nAvg turn around time: %.2f",(float)ta_sum/n);
-    printf("\nAvg waiting time: %.2f",(float)wait_sum/n);
+    printf("\nAvg waiting time: %.2f\n",(float)wait_sum/n);
     
 }
 
