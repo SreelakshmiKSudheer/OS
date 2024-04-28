@@ -148,6 +148,36 @@ void cscan(int r[],int n,int head,int limit)
     printf("\nAvg seek time: %.2f\n\n",(float)seek_sum/n);
 }
 
+void look(int r[],int n,int head)
+{
+    int i,seek_sum = 0,index = 0;
+    sort(r,n);
+
+    printf("\n\nLOOK\n");
+    printf("Accessing order of data: \n");
+    
+    seek_sum += abs(r[n-1] - head);
+    seek_sum += abs(r[n-1] - r[0]);
+
+    for(i = 0; i < n; i++)
+    {
+        if(r[i] < head)
+            continue;
+        index++;
+        printf("%d ",r[i]);
+        
+    }
+    index = n - index;
+
+    for(i = index-1 ; i >= 0; i--)
+    {
+        printf("%d ",r[i]);
+    }
+
+    printf("\nTotal seek time: %d",seek_sum);
+    printf("\nAvg seek time: %.2f\n\n",(float)seek_sum/n);
+}
+
 int main()
 {
     int N,i,head,limit;
@@ -173,7 +203,7 @@ int main()
     sstf(r,n,head);
     scan(r,n,head,limit);
     cscan(r,n,head,limit);
-    //look(r,n,head);
+    look(r,n,head);
     //clook(r,n,head);
 
 }
