@@ -82,6 +82,37 @@ void sstf(int r[],int n,int head)
         rec[min] = 1;
     
     }
+    
+    printf("\nTotal seek time: %d",seek_sum);
+    printf("\nAvg seek time: %.2f\n\n",(float)seek_sum/n);
+}
+
+void scan(int r[],int n,int head,int limit)
+{
+    int i,seek_sum = 0,index = 0;
+    sort(r,n);
+
+    printf("\n\nSSTF\n");
+    printf("Accessing order of data: \n");
+    
+    seek_sum += abs(limit - head);
+    seek_sum += abs(limit - r[0]);
+
+    for(i = 0; i < n; i++)
+    {
+        if(r[i] < head)
+            continue;
+        index++;
+        printf("%d ",r[i]);
+        
+    }
+    index = n - index;
+
+    for(i = index-1 ; i >= 0; i--)
+    {
+        printf("%d ",r[i]);
+    }
+
     printf("\nTotal seek time: %d",seek_sum);
     printf("\nAvg seek time: %.2f\n\n",(float)seek_sum/n);
 }
@@ -109,8 +140,8 @@ int main()
 
     fcfs(r,n,head);
     sstf(r,n,head);
-    //scan(r,n,head);
-    //cscan(r,n,head);
+    scan(r,n,head,limit);
+    //cscan(r,n,head,limit);
     //look(r,n,head);
     //clook(r,n,head);
 
