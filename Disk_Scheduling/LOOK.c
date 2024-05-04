@@ -72,11 +72,6 @@ int main()
     printf("Enter the limit disk head: ");
     scanf("%d",&limit);
 
-    fcfs(r,n,head);
-    sstf(r,n,head);
-    scan(r,n,head,limit);
-    cscan(r,n,head,limit);
     look(r,n,head);
-    clook(r,n,head);
 
 }
