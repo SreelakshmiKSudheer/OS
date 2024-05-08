@@ -135,6 +135,7 @@ void wf(int mr[],int N)
                         {
                                 temp = part[j];
                                 part[j] = part[j+1];
+                                part[j+1] = temp;
 
                           }
                 }
