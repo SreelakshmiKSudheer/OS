@@ -66,9 +66,9 @@ CPU Scheduling
 - Questions
   1. Banker's algorithms
 
-8. Memory Management(First fit, Best fit, Worst Fit)
+### 8. Memory Management(First fit, Best fit, Worst Fit)
 
-### Page replacement
+### 9. Page replacement
   1. FIFO
   2. LFU
   3. LRU
@@ -76,7 +76,7 @@ CPU Scheduling
   5. Optimal page replacement
   6. Page replacement
 
-### Disk Scheduling
+### 10. Disk Scheduling
   1. FCFS
   2. SSTF
   3. SCAN
