@@ -26,7 +26,7 @@ void clook(int r[],int n,int head)
     int i,seek_sum = 0,index = 0;
     sort(r,n);
 
-    printf("\n\nC-SCAN\n");
+    printf("\n\nC-LOOK\n");
     printf("Accessing order of data: \n");
     
     seek_sum += abs(r[n-1] - head);
