@@ -5,7 +5,9 @@
 
 #define MAX 5
 
-int E = MAX, F = 0, S = 1,x = 0;
+int buffer[MAX];                // buffer array
+int in = -1, out = -1;
+int empty = MAX, full = 0, semaphore = 1,next_produced = 0, next_consumed;
 
 void wait(int *semaphore)
 {
@@ -13,32 +15,25 @@ void wait(int *semaphore)
     (*semaphore)--;
 }
 
-void sig(int *semaphore)
+void signal(int *semaphore)
 {
     (*semaphore)++;
 }
 
-void pro()
-{
-    x++;
-}
-void take()
-{
-    if(x > 0)
-        x--;
-}
 void *produce(void *arg)
 {
-    int i;
+    int i,j;
     for(i = 0; i < 5; i++)
     {
-        wait(&E);
-        wait(&S);
-        //if(x < MAX)
-        pro();
-        printf("Producer: produced %d\n",x);
-        sig(&S);
-        sig(&F);
+        next_produced++;        // next item is produced in next_produced
+        
+        wait(&empty);
+        wait(&semaphore);
+    
+        
+
+        signal(&semaphore);
+        signal(&full);
 
         sleep(1);
     }
@@ -51,13 +46,13 @@ void *consume()
     int i;
     for(i = 0; i < 5; i++)
     {
-        wait(&F);
-        wait(&S);
+        wait(&full);
+        wait(&semaphore);
         //if(x > 0)
         take();
         printf("Consumer: consumed %d\n",x);
-        sig(&S);
-        sig(&E);
+        signal(&semaphore);
+        signal(&empty);
 
         sleep(1);
     }
