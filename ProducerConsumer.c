@@ -44,10 +44,10 @@ void bufferDisplay()
 {
     int j;
 
-    printf("Buffer: [");
     j = out;
     if(out != -1 && in != -1)
     {
+        printf("Buffer: [");
         while(j < in)
         {
             printf("%d ",buffer[j]);
