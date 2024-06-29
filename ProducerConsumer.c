@@ -30,7 +30,24 @@ void *produce(void *arg)
         wait(&empty);
         wait(&semaphore);
     
-        
+        if(in == -1)
+        {
+            in = 0;
+            out = 0;
+        }
+        else
+            in = (in + 1) % MAX;
+        buffer[in] = next_produced;
+
+        printf("Producer: produced %d\n",buffer[in]);
+        printf("Buffer: [");
+        j = out;
+        while(j < in)
+        {
+            printf("%d ",buffer[j]);
+            j = (j+1) % MAX;
+        }
+        printf("%d]\n",buffer[in]);
 
         signal(&semaphore);
         signal(&full);
