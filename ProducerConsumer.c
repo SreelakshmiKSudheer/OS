@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <unistd.h>
 
 #define MAX 5
 
@@ -19,17 +20,17 @@ void sig(int *semaphore)
 
 void pro()
 {
-    if(x < MAX)
-        x++;
+    x++;
 }
 void take()
 {
-    if(x > 1)
+    if(x > 0)
         x--;
 }
-void *produce()
+void *produce(void *arg)
 {
-    while(1)
+    int i;
+    for(i = 0; i < 5; i++)
     {
         wait(&E);
         wait(&S);
@@ -38,6 +39,8 @@ void *produce()
         printf("Producer: produced %d\n",x);
         sig(&S);
         sig(&F);
+
+        sleep(1);
     }
     pthread_exit(NULL);
 
@@ -45,7 +48,8 @@ void *produce()
 
 void *consume()
 {
-    while(1)
+    int i;
+    for(i = 0; i < 5; i++)
     {
         wait(&F);
         wait(&S);
@@ -54,6 +58,8 @@ void *consume()
         printf("Consumer: consumed %d\n",x);
         sig(&S);
         sig(&E);
+
+        sleep(1);
     }
     pthread_exit(NULL);
 }
