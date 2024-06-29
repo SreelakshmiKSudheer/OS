@@ -63,6 +63,7 @@ void *produce(void *arg)
 {
     int i;
     for(i = 0; i < 5; i++)
+    //while(1)
     {
         next_produced++;        // next item is produced in next_produced
         
@@ -86,8 +87,9 @@ void *produce(void *arg)
 
 void *consume()
 {
-    int i,j;
+    int i;
     for(i = 0; i < 5; i++)
+    //while(1)
     {
         wait(&full);
         wait(&semaphore);
@@ -100,7 +102,7 @@ void *consume()
         sig(&semaphore);
         sig(&empty);
 
-        sleep(1);
+        sleep(2);
     }
     pthread_exit(NULL);
 }
