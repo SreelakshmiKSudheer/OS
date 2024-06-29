@@ -15,10 +15,12 @@ void wait(int *semaphore)
     (*semaphore)--;
 }
 
-void signal(int *semaphore)
+void sig(int *semaphore)
 {
     (*semaphore)++;
 }
+
+
 
 void *produce(void *arg)
 {
@@ -49,8 +51,8 @@ void *produce(void *arg)
         }
         printf("%d]\n",buffer[in]);
 
-        signal(&semaphore);
-        signal(&full);
+        sig(&semaphore);
+        sig(&full);
 
         sleep(1);
     }
@@ -60,16 +62,30 @@ void *produce(void *arg)
 
 void *consume()
 {
-    int i;
+    int i,j;
     for(i = 0; i < 5; i++)
     {
         wait(&full);
         wait(&semaphore);
-        //if(x > 0)
-        take();
-        printf("Consumer: consumed %d\n",x);
-        signal(&semaphore);
-        signal(&empty);
+        
+        next_consumed = buffer[out];
+        printf("Consumer: consumed %d\n",buffer[out]);
+        out = (out+1) % MAX;
+        if(out == (in + 1) % MAX)
+        {
+            in = out = -1;
+        }
+        printf("Buffer: [");
+        j = out;
+        while(j < in)
+        {
+            printf("%d ",buffer[j]);
+            j = (j+1) % MAX;
+        }
+        printf("%d]\n",buffer[in]);
+        
+        sig(&semaphore);
+        sig(&empty);
 
         sleep(1);
     }
