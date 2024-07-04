@@ -29,7 +29,7 @@ void* writer(void* arg)
         wait_s(&rw_mutex);              // waits if some reader or writer is currently accessing the shared resource
         // if no others access shared resource
         shr++;                          // increment/change shr
-        printf("Writer %d: Wrote data %d",writer_id,shr);
+        printf("Writer %d: Wrote data %d\n",writer_id,shr);
         sleep(1);
         signal_s(&rw_mutex);            // after write allow other readers or writer to access shr
         sleep(1);
@@ -83,7 +83,7 @@ int main()
         pthread_create(&readerThread[i],NULL,reader,&reader_id[i]);
     }
 
-    for(i = 0; i < 2; i++)              // create reader threads
+    for(i = 0; i < 2; i++)              // create writer threads
     {
         writer_id[i] = i+1;
         pthread_create(&writerThread[i],NULL,writer,&writer_id[i]);
