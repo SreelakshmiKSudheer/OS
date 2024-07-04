@@ -7,7 +7,8 @@
 
 int buffer[MAX];                // buffer array
 int in = -1, out = -1;
-int empty = MAX, full = 0, semaphore = 1,next_produced = 0, next_consumed;
+int empty = MAX, full = 0, semaphore = 1;   // semaphores
+int next_produced = 0, next_consumed;       // next item to be added or consumed to the shared resource
 
 void wait(int *semaphore)
 {
