@@ -83,3 +83,8 @@ CPU Scheduling
   4. C - SCAN
   5. LOOK
   6. C - LOOK
+
+### Producer(1)-Consumer(1) problem
+
+### Readers-Writers problem
+
