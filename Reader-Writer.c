@@ -5,7 +5,7 @@
 
 int *mutex;        //  ensure mutual exclusion when the variable read_count is updated
 int *rw_mutex;     // mutual exclusion of reader and writer semaphores
-int read_count;    // keeps track of the no. of readers
+int read_count = 0;    // keeps track of the no. of readers
 int shr = 0;       // shared resource
 
 void wait_s(int *semaphore)
@@ -26,11 +26,12 @@ void writer(void *arg)
 
     while(1)
     {
-        wait_s(&rw_mutex);
-
-        shr++;
+        wait_s(&rw_mutex);              // waits if some reader or writer is currently accessing the shared resource
+        // if no others access shared resource
+        shr++;                          // increment/change shr
         printf("Writer %d: Wrote data %d",writer_id,shr);
 
-        signal_s(&rw_mutex);
+        signal_s(&rw_mutex);            // after write allow other readers or writer to access shr
     }
 }
+
