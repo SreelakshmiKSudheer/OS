@@ -8,15 +8,29 @@ int *rw_mutex;     // mutual exclusion of reader and writer semaphores
 int read_count;    // keeps track of the no. of readers
 int shr = 0;       // shared resource
 
-void s_wait(int *semaphore)
+void wait_s(int *semaphore)
 {
     while(*semaphore <= 0);
     // do nothing
     *semaphore--;
 }
 
-void s_signal(int *semaphore)
+void signal_s(int *semaphore)
 {
     *semaphore++;
 }
 
+void writer(void *arg)
+{
+    int writer_id = *((int*)arg);       // writer_id given as the function parameter
+
+    while(1)
+    {
+        wait_s(&rw_mutex);
+
+        shr++;
+        printf("Writer %d: Wrote data %d",writer_id,shr);
+
+        signal_s(&rw_mutex);
+    }
+}
