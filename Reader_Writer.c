@@ -3,8 +3,8 @@
 #include <pthread.h>
 #include <unistd.h>
 
-int *mutex;        //  ensure mutual exclusion when the variable read_count is updated
-int *rw_mutex;     // mutual exclusion of reader and writer semaphores
+int mutex = 1;        //  ensure mutual exclusion when the variable read_count is updated
+int rw_mutex = 1;     // mutual exclusion of reader and writer semaphores
 int read_count = 0;    // keeps track of the no. of readers
 int shr = 0;       // shared resource
 
@@ -12,15 +12,15 @@ void wait_s(int *semaphore)
 {
     while(*semaphore <= 0);
     // do nothing
-    *semaphore--;
+    (*semaphore)--;
 }
 
 void signal_s(int *semaphore)
 {
-    *semaphore++;
+    (*semaphore)++;
 }
 
-void writer(void *arg)
+void* writer(void* arg)
 {
     int writer_id = *((int*)arg);       // writer_id given as the function parameter
 
@@ -30,12 +30,14 @@ void writer(void *arg)
         // if no others access shared resource
         shr++;                          // increment/change shr
         printf("Writer %d: Wrote data %d",writer_id,shr);
-
+        sleep(1);
         signal_s(&rw_mutex);            // after write allow other readers or writer to access shr
+        sleep(1);
     }
+    pthread_exit(NULL);
 }
 
-void reader(void *arg)
+void *reader(void *arg)
 {
     int reader_id = *((int*)arg);       // reader_id given as the function parameter
 
@@ -46,7 +48,7 @@ void reader(void *arg)
         
         /*if this is the first reader(read_count = 1), 
             request lock 
-                if rw_mutex > 0 meaning some writer is currently writing (this is the first reader, so no other readers)
+                i(&rw_mutex > 0 meaning some writer is currently writing (this is the first reader, so no other readers)
                     - request lock is held, waits till access allowed
         */
         if(read_count == 1)
@@ -54,6 +56,7 @@ void reader(void *arg)
         signal_s(&mutex);
 
         printf("Reader %d: reads %d\n",reader_id,shr);
+        sleep(1);
 
         wait_s(&mutex);         // if some reader is accessing read_count, wait
         read_count--;           // decrement read_count
@@ -64,4 +67,33 @@ void reader(void *arg)
         signal_s(&mutex);       // read_count made accessible to other readers
         sleep(1);
     }
+
+    pthread_exit(NULL);
+}
+
+int main()
+{
+    pthread_t readerThread[5], writerThread[2];     // threads
+    int reader_id[5], writer_id[2];     // thread ids
+    int i;
+
+    for(i = 0; i < 5; i++)              // create reader threads
+    {
+        reader_id[i] = i+1;
+        pthread_create(&readerThread[i],NULL,reader,&reader_id[i]);
+    }
+
+    for(i = 0; i < 2; i++)              // create reader threads
+    {
+        writer_id[i] = i+1;
+        pthread_create(&writerThread[i],NULL,writer,&writer_id[i]);
+    }
+
+    for(i = 0; i < 5; i++)
+        pthread_join(readerThread[i],NULL);
+
+    for(i = 0; i < 2; i++)
+        pthread_join(writerThread[i],NULL);
+
+    return 0;
 }
