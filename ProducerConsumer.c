@@ -49,7 +49,7 @@ void bufferDisplay()
     if(out != -1 && in != -1)
     {
         printf("Buffer: [");
-        while(j < in)
+        while(j != in)
         {
             printf("%d ",buffer[j]);
             j = (j+1) % MAX;
