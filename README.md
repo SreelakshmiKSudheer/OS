@@ -88,3 +88,4 @@ CPU Scheduling
 
 ### Readers-Writers problem
 
+### Dining Philosophers - semaphores
