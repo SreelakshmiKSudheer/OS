@@ -69,7 +69,7 @@ void *produce(void *arg)
         next_produced++;        // next item is produced in next_produced
         
         wait(&empty);
-        wait(&semaphore);
+        wait(&semaphore);       // mutual exculsion to access to the shared resource
     
         pro();
         buffer[in] = next_produced;
