@@ -89,3 +89,5 @@ CPU Scheduling
 ### Readers-Writers problem
 
 ### Dining Philosophers - semaphores
+
+### Dining Philosophers - monitors
