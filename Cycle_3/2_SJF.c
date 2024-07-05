@@ -81,6 +81,7 @@ void sjf(Process *a, int n)
                 break;
             else
             {
+                
                 for(j = 0; j < n; j++)
                 {
                     if(rec[j] == 0)
@@ -90,12 +91,12 @@ void sjf(Process *a, int n)
                     }
                 }
             
-
+                
                 for(j = 0; j < n; j++)
                 {
-                    if(a[j].arr_time <= sys_time)
+                    if(a[j].arr_time <= sys_time && rec[j] == 0)
                     {
-                        if(a[j].burst_time < a[min].burst_time && rec[j] == 0)
+                        if(a[j].burst_time < a[min].burst_time)
                             min = j;
                     }
                     //printf("min = %d\n",min);

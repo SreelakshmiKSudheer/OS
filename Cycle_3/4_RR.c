@@ -65,7 +65,7 @@ int allCompleted(int n,int rec[])
 // check single process completion
 int isComplete(Process p)
 {
-    if(p.remain == 0)
+    if(p.remain <= 0)
         return 1;
     return 0;
 }
