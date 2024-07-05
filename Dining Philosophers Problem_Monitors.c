@@ -3,8 +3,10 @@
 #include <pthread.h>
 #include <unistd.h>
 
-int state[5] = {1,1,1,1,1};
-int self[5];
+#define N 5  // Number of philosophers
+
+int state[N] = {1, 1, 1, 1, 1};
+int self[N] = {0, 0, 0, 0, 0};  // to represent condition variables
 /*
 states:
 1: thinking
@@ -12,78 +14,67 @@ states:
 3: eating
 */
 
-int mutex = 0;
+int mutex = 1;
 
-void wait_s(int *semaphore)
-{
-    while(*semaphore <= 0);
-    // do nothing
+void wait_s(int *semaphore) {
+    while (*semaphore <= 0);
     (*semaphore)--;
 }
 
-void signal_s(int *semaphore)
-{
+void signal_s(int *semaphore) {
     (*semaphore)++;
 }
 
-void test(int i)
-{
-    if(state[(i+1) % 5] != 3 && state[i] == 2 && state[(i+4) % 5] != 3)
-    {
+void test(int i) {
+    if (state[(i+1) % N] != 3 && state[i] == 2 && state[(i+4) % N] != 3) {
         state[i] = 3;
-        printf("Philosopher %d is eating\n",i);
-        self[i] = 0;
+        printf("Philosopher %d is eating\n", i + 1);
+        self[i] = 0;  // Philosopher is no longer waiting
     }
 }
 
-void pickup(int i)
-{
+void pickup(int i) {
     wait_s(&mutex);
-    state[i] = 2;
-    printf("Philosopher %d is hungry\n",i);
+    state[i] = 2;  // Philosopher is hungry
+    printf("Philosopher %d is hungry\n", i + 1);
     test(i);
     signal_s(&mutex);
-    if(state[i] != 3)
-        self[i] = 1;                                            // waiting
+    wait_s(&self[i]);  // If unable to eat, wait
 }
 
-void drop(int i)
-{
-    //wait_s(&mutex);
-    state[i] = 1;
-    test((i+1) % 5);
-    test((i+4) % 5);
-
-    //signal_s(&mutex);
+void drop(int i) {
+    wait_s(&mutex);
+    state[i] = 1;  // Philosopher is thinking
+    printf("Philosopher %d putting fork %d and %d down\n", i + 1, (i + 4) % N + 1, i + 1);
+    printf("Philosopher %d is thinking\n", i + 1);
+    test((i+1) % N);  // Test if neighbors can eat
+    test((i+4) % N);
+    signal_s(&mutex);
 }
 
-void *philosopher(void *arg)
-{
+void* philosopher(void* arg) {
     int id = *((int*)arg);
-    while(1)
-    {
-        sleep(1);
+    while (1) {
+        sleep(1);  // Philosopher is thinking
         pickup(id);
-        sleep(0);
+        sleep(0);  // Philosopher is eating
         drop(id);
     }
     pthread_exit(NULL);
 }
 
-int main()
-{
-    int i, id[5];
-    pthread_t ph[5];
+int main() {
+    int i, id[N];
+    pthread_t ph[N];
 
-    for(i = 0; i < 5; i++)
-    {
-        id[i] = i+1;
-        pthread_create(&ph[i],NULL,philosopher,&id[i]);
+    for (i = 0; i < N; i++) {
+        id[i] = i;
+        pthread_create(&ph[i], NULL, philosopher, &id[i]);
+        printf("Philosopher %d is thinking\n", i + 1);
     }
 
-    for(i = 0; i < 5; i++)
-    {
-        pthread_join(ph[i],NULL);
+    for (i = 0; i < N; i++) {
+        pthread_join(ph[i], NULL);
     }
 
     return 0;
