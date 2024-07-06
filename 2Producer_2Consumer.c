@@ -61,11 +61,12 @@ void *produce(void *arg)
     int id = *((int*)arg);
     while(1)
     {
-        next_produced++;
+        
 
         wait_s(&empty);
         wait_s(&semaphore);
         
+        next_produced++;
         inUpdate();
         buffer[in] = next_produced;
         printf("Producer %d: Produced item %d\n",id,buffer[in]);
