@@ -93,3 +93,5 @@ CPU Scheduling
 ### Dining Philosophers - monitors
 
 ### Producer(2)-Consumer(2) problem
+
+### Producer(2 - number, alphabeta) - Consumer(1) problem
