@@ -63,9 +63,11 @@ void *produce(void *arg)
 
     while(1)
     {
+        wait_s(&pmutex);
         wait_s(&empty);
         wait_s(&pc_mutex);
-        wait_s(&pmutex);
+        
+        //wait_s(&empty);
 
         inUpdate();
         buffer[in] = item;
@@ -88,11 +90,12 @@ void *produce(void *arg)
                 item += 1;
         }
         
-
-        signal_s(&pmutex);
+        //signal_s(&full);
+        
         signal_s(&pc_mutex);
         signal_s(&full);
-        sleep(1);
+        signal_s(&pmutex);
+        sleep(2);
     }
     pthread_exit(NULL);
 }
@@ -121,9 +124,9 @@ int main()
     char num = '1', ch = 'a';
     pthread_t producerNum,producerAlpha,consumer;
 
-    pthread_create(&producerNum,NULL,&produce,&num);
-    pthread_create(&producerAlpha,NULL,&produce,&ch);
-    pthread_create(&consumer,NULL,&consume,NULL);
+    pthread_create(&producerNum,NULL,produce,&num);
+    pthread_create(&producerAlpha,NULL,produce,&ch);
+    pthread_create(&consumer,NULL,consume,NULL);
 
     pthread_join(producerNum,NULL);
     pthread_join(producerAlpha,NULL);

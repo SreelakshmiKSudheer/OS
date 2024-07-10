@@ -64,9 +64,10 @@ void *produce(void *arg)
 
     while(1)
     {
+        wait_s(&pmutex);
         wait_s(&empty);
         wait_s(&pc_mutex);
-        wait_s(&pmutex);
+        
 
         inUpdate();
         buffer[in] = item;
@@ -74,9 +75,10 @@ void *produce(void *arg)
         bufferDisplay();
         //sleep(1);
         item += 2;
-        signal_s(&pmutex);
+        
         signal_s(&pc_mutex);
         signal_s(&full);
+        signal_s(&pmutex);
         sleep(1);
     }
     pthread_exit(NULL);
