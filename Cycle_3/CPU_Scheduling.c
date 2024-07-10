@@ -274,7 +274,7 @@ void rr(Process *a, int n)
     printf("Round Robin\n");
     printf("PID  Arrival Time  Burst Time  Response Time  Completion Time  Turn Around Time  Waiting Time\n");
 
-    int sys_time = 0, resp_sum = 0, ta_sum = 0,wait_sum = 0, quantum = 1;
+    int sys_time = 0, resp_sum = 0, ta_sum = 0,wait_sum = 0, quantum = 4;
 
     for(i = 0; i < n; i++)
     {
@@ -325,7 +325,8 @@ void rr(Process *a, int n)
                     // check whether the current process is complete or not
                     if(isComplete(a[prior]))
                     {
-                        a[prior].comp_time = sys_time + a[prior].remain;                                      // set completion time
+                        sys_time += a[prior].remain;
+                        a[prior].comp_time = sys_time;                                      // set completion time
                         a[prior].ta_time = a[prior].comp_time - a[prior].arr_time;          // set turn around time
                         a[prior].wait_time = a[prior].ta_time - a[prior].burst_time;        // set waiting time
 
