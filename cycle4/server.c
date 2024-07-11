@@ -28,7 +28,8 @@ int main()
                 if(ptr->chance == 1)
                 {
                         printf("Enter message: ");
-                        scanf(" %[^\n]", ptr->msg);                        if(!strcmp(ptr->msg,"exit"))
+                        scanf(" %[^\n]", ptr->msg);                        
+                        if(!strcmp(ptr->msg,"exit"))
                                 ptr->exit = 1;
                         ptr->chance = 4;
                 }
