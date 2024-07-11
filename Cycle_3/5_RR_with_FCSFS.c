@@ -71,7 +71,7 @@ int isComplete(Process p)
 }
 
 // define rr
-void rr(Process *a, int n)
+void rr_fcfs(Process *a, int n)
 {
     sort(a,n);
 
@@ -156,5 +156,5 @@ int main()
         //scanf("%d",&a[i].priority);
     }
 
-    rr(a,n);
+    rr_fcfs(a,n);
 }

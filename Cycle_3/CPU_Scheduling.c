@@ -351,6 +351,67 @@ void rr(Process *a, int n)
     
 }
 
+void rr_fcfs(Process *a, int n)
+{
+    sort(a,n);
+
+    int i;
+    const int N = n;
+    int rec[N];
+
+    // settles things for completion check
+    for(i = 0; i < n; i++)
+    {
+        rec[i] = 0;
+        a[i].remain = a[i].burst_time;
+    }
+
+    printf("Round Robin\n");
+    printf("PID  Arrival Time  Burst Time  Response Time  Completion Time  Turn Around Time  Waiting Time\n");
+
+    int sys_time = 0, resp_sum = 0, ta_sum = 0,wait_sum = 0, quantum = 4;
+
+    //sys_time = a[0].arr_time;
+    while(!allCompleted(n,rec))
+    {
+        for(i = 0; i < n; i++)
+        {
+            if(sys_time < a[i].arr_time)
+                sys_time = a[i].arr_time;
+
+            if(rec[i] == 0 && a[i].arr_time <= sys_time)
+            {
+                if(a[i].remain == a[i].burst_time)
+                {
+                    a[i].start = sys_time;
+                    a[i].resp_time = a[i].start - a[i].arr_time;
+                }
+
+                sys_time += quantum;
+                a[i].remain -= quantum;
+
+                if(a[i].remain <= 0)
+                {
+                    rec[i] = 1;
+                    sys_time += a[i].remain;
+                    a[i].comp_time = sys_time;
+                    a[i].ta_time = a[i].comp_time - a[i].arr_time;
+                    a[i].wait_time = a[i].ta_time - a[i].burst_time;
+
+                    resp_sum += a[i].resp_time;
+                    ta_sum += a[i].ta_time;
+                    wait_sum += a[i].wait_time;
+                }
+            }
+        }        
+    }
+    print(a,n);    
+    printf("\nAvg response time: %.2f",(float)resp_sum/n);
+    printf("\nAvg turn around time: %.2f",(float)ta_sum/n);
+    printf("\nAvg waiting time: %.2f\n",(float)wait_sum/n);
+    
+}
+
 int main()
 {
     int n,i;
@@ -380,6 +441,7 @@ int main()
     sjf(a,n);
     ps(a,n);
     rr(a,n);
+    rr_fcfs(a,n);
 
 
 }
