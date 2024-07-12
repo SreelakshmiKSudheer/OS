@@ -67,9 +67,10 @@ void fifo(int ref[],int n)
                 if(!found)
                 {
                         faults++;
-                        if(front == (rear+1) % MAX)
+                        //if(front == (rear+1) % MAX)
+                        if(full())
                         {
-                                front = (front+1) % MAX;                // dequeue
+                                //front = (front+1) % MAX;                // dequeue
                                 rear = (rear+1) % MAX;                  // enqueue
                                 frame[rear] = current;
                         }

@@ -3,37 +3,37 @@
 #include <stdlib.h>
 
 int semaphore = 1;
-int state = 1;
+int turn = 1;
 
 void wait(int *semaphore)
 {
         while(*semaphore <= 0)
         {
-                *semaphore--;
+                (*semaphore)--;
         }
 }
 
-void signal(int *semaphore)
+void sig(int *semaphore)
 {
         sleep(1);
-        *semaphore++;
+        (*semaphore)++;
 }
 
 void *thread_f(void *arg)
 {
         int n = *((int *)arg);
-        int st = n;
+        int id = n;
 
         while(1)
         {
                 wait(&semaphore);
-                if(state == st)
+                if(turn == id)
                 {
-                        printf("From thread(%d) - %d\n",st,n);
+                        printf("From thread(%d) - %d\n",id,n);
                         n += 2;
-                        state = 3 - st;
+                        turn = 3 - id;
                 }
-                signal(&semaphore);
+                sig(&semaphore);
         }
         pthread_exit(NULL);
 }
