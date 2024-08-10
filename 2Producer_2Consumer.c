@@ -90,17 +90,17 @@ void *consume(void *arg)
 
     while(1)
     {
+        wait_s(&cmutex);
         wait_s(&full);
         wait_s(&pc_mutex);
-        wait_s(&cmutex);
 
         printf("Consumer %d: consumes %d\n",id,buffer[out]);
         outUpdate();
         bufferDisplay();
         
-        signal_s(&cmutex);
         signal_s(&pc_mutex);
         signal_s(&empty);
+        signal_s(&cmutex);
         sleep(2);
     }
     pthread_exit(NULL);

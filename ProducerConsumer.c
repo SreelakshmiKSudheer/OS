@@ -24,12 +24,12 @@ void sig(int *semaphore)
 void  pro()
 {
     if(in == -1)
-        {
-            in = 0;
-            out = 0;
-        }
-        else
-            in = (in + 1) % MAX;
+    {
+        in = 0;
+        out = 0;
+    }
+    else
+        in = (in + 1) % MAX;
 }
 
 void take()

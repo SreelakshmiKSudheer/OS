@@ -43,7 +43,7 @@ void print(Process *a, int n)
 
     for(i = 0; i < n; i++)
     {
-        printf("%2d%15d%12d%15d%17d%18d%14d\n",a[i].PID,a[i].arr_time,a[i].burst_time,a[i].resp_time,a[i].comp_time,a[i].ta_time,a[i].wait_time);
+        printf("%2d%15d%12d %d %15d%17d%18d%14d\n",a[i].PID,a[i].arr_time,a[i].burst_time,a[i].start,a[i].resp_time,a[i].comp_time,a[i].ta_time,a[i].wait_time);
 
     }
 }
@@ -87,7 +87,7 @@ void rr_fcfs(Process *a, int n)
     }
 
     printf("Round Robin\n");
-    printf("PID  Arrival Time  Burst Time  Response Time  Completion Time  Turn Around Time  Waiting Time\n");
+    printf("PID  Arrival Time  Burst Time S  Response Time  Completion Time  Turn Around Time  Waiting Time\n");
 
     int sys_time = 0, resp_sum = 0, ta_sum = 0,wait_sum = 0, quantum = 4;
 
@@ -97,7 +97,7 @@ void rr_fcfs(Process *a, int n)
         for(i = 0; i < n; i++)
         {
             if(sys_time < a[i].arr_time)
-                sys_time = a[i].arr_time;
+                break;
 
             if(rec[i] == 0 && a[i].arr_time <= sys_time)
             {
@@ -125,6 +125,7 @@ void rr_fcfs(Process *a, int n)
             }
         }        
     }
+    
     print(a,n);    
     printf("\nAvg response time: %.2f",(float)resp_sum/n);
     printf("\nAvg turn around time: %.2f",(float)ta_sum/n);
@@ -146,8 +147,7 @@ int main()
 
     for(i = 0; i < n; i++)
     {
-        printf("Process ID: ");
-        scanf("%d",&a[i].PID);
+        a[i].PID = i+1;
         printf("Arrival Time: ");
         scanf("%d",&a[i].arr_time);
         printf("Burst Time: ");
